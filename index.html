@@ -1,0 +1,867 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ToroTrades24 — Accesso e Registrazione AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0D0F14;
+  --accent:#00f5c3;
+  --accent-light:#7ff8e0;
+  --muted:#9fb3bf;
+  --text:#eaf6f2;
+}
+html, body {margin:0; padding:0; font-family:Inter, sans-serif; background:var(--bg); color:var(--text); height:100%; overflow-x:hidden;}
+body::before {content:""; position:fixed; inset:0; background:radial-gradient(circle at 30% 30%, rgba(0,245,195,0.1), transparent 70%), radial-gradient(circle at 70% 70%, rgba(127,248,224,0.1), transparent 70%); z-index:0; pointer-events:none; animation: bgPulse 10s ease-in-out infinite;}
+@keyframes bgPulse {0%,100% {background-position:30% 30%,70% 70%;} 50% {background-position:70% 70%,30% 30%;}}
+
+/* PRELOADER */
+#preloader {position:fixed; inset:0; background:#0D0F14; z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:var(--accent);}
+.ia-logo {width:100px; margin-bottom:20px; animation:pulse 2s infinite;}
+.ia-logo {
+  width: 100px;
+  margin-bottom: 20px;
+  animation: pulse 2s infinite;
+  /* Aggiungi l'effetto glow */
+  box-shadow: 0 0 15px 5px rgba(0, 245, 195, 0.8);  /* Crea l'effetto glow */
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.85;
+    box-shadow: 0 0 15px 5px rgba(0, 245, 195, 0.8);  /* Glow iniziale */
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+    box-shadow: 0 0 25px 10px rgba(0, 245, 195, 1);  /* Glow più intenso */
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+    box-shadow: 0 0 15px 5px rgba(0, 245, 195, 0.8);  /* Glow finale */
+  }
+}
+
+@keyframes pulse {0%{transform:scale(1); opacity:0.85;}50%{transform:scale(1.08); opacity:1;}100%{transform:scale(1); opacity:0.85;}}
+.loader-bar {width:0; height:6px; background:var(--accent); border-radius:6px; box-shadow:0 0 12px var(--accent); animation:loadAnim 2.5s forwards ease-in-out;}
+.loader-text {font-size:14px; opacity:.85; margin-top:12px; animation:blinkText 1.4s infinite;}
+@keyframes loadAnim {0%{width:0;}100%{width:100%;}}
+@keyframes blinkText {0%,100%{opacity:.25;}50%{opacity:1;}}
+.status-text {font-size:14px; margin-top:10px; color:var(--accent); opacity:.95;}
+#matrixCode {font-family:monospace; font-size:9px; line-height:9px; color:rgba(0,245,195,.55); height:60px; margin-top:12px; white-space:pre; overflow:hidden; text-align:center;}
+
+/* HEADER */
+header {position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:20px 40px; backdrop-filter:blur(8px); background:rgba(10,12,16,0.6); z-index:10;}
+.logo {font-family:'Orbitron', sans-serif; font-weight:700; font-size:14px; background:linear-gradient(90deg,var(--accent),var(--accent-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 12px var(--accent); cursor:pointer;}
+
+/* MAIN WRAPPER */
+.main-wrap {display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; padding-top:60px; padding-bottom:40px; position:relative; z-index:1; gap:16px;}
+
+/* CARD BASE */
+.card {background:rgba(15,21,32,0.85); border:1px solid rgba(0,245,195,0.2); border-radius:16px; width:100%; max-width:280px; padding:20px; box-shadow:0 0 40px rgba(0,245,195,0.2); backdrop-filter:blur(6px); text-align:center; animation: cardEnter 1s ease; margin:0 auto; display:flex; flex-direction:column; align-items:center;}
+@keyframes cardEnter {0%{opacity:0; transform:translateY(-20px);}100%{opacity:1; transform:translateY(0);}}
+.card h2 {margin:0 0 12px; font-size:22px; letter-spacing:1px;}
+.card p {margin:0 0 20px; color:var(--muted);}
+.input {width:100%; max-width:220px; padding:14px; border-radius:10px; border:1px solid rgba(0,245,195,0.2); background:#0b1118; color:var(--text); font-size:15px; text-align:center; margin-bottom:12px;}
+.btn {width:100%; max-width:220px; padding:14px; border:none; border-radius:10px; background:linear-gradient(90deg,var(--accent),var(--accent-light)); color:#052; font-weight:700; cursor:pointer; box-shadow:0 0 12px rgba(0,245,195,0.5); transition:0.2s; margin:0 auto;}
+.btn:hover {box-shadow:0 0 24px rgba(0,245,195,0.8); transform:scale(1.02);}
+
+/* INFO CARDS */
+.info-cards {display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin-bottom:20px;}
+.info-card {background:rgba(15,21,32,0.85); border:1px solid rgba(0,245,195,0.2); border-radius:16px; width:140px; padding:16px; box-shadow:0 0 30px rgba(0,245,195,0.2); text-align:center; cursor:pointer; transition:0.3s;}
+.info-card:hover {box-shadow:0 0 40px rgba(0,245,195,0.8); transform:scale(1.05);}
+.info-card h3 {margin:0 0 8px; font-size:18px; color:var(--accent);}
+
+/* LEGAL TEXT */
+.legal-text {margin-top:16px; text-align:center; font-size:12px; color:var(--muted); max-width:280px;}
+
+/* MODAL REGISTRAZIONE */
+.modal-backdrop {position:fixed; inset:0; background:rgba(0,0,0,0.7); display:none; justify-content:center; align-items:center; z-index:1000; padding:10px;}
+.modal {background:#0f1520; border:1px solid rgba(0,245,195,0.1); border-radius:14px; padding:16px; width:90%; max-width:320px; max-height:80vh; overflow-y:auto; box-shadow:0 0 40px rgba(0,245,195,0.3);}
+.modal h3 {margin-top:0; font-size:20px; margin-bottom:16px;}
+.row {display:flex; flex-direction:column; gap:10px; margin-bottom:12px;}
+.col {flex:1; width:100%;}
+select,input[type="number"] {width:100%; max-width:100%; padding:12px; border-radius:8px; border:1px solid rgba(0,245,195,0.2); background:#0b1118; color:#eaf6f2;}
+label {display:block; font-size:13px; margin-bottom:6px; color:var(--muted);}
+.small {font-size:13px; color:var(--muted);}
+.modal-actions {display:flex; justify-content:flex-end; gap:10px; margin-top:12px; flex-wrap:wrap;}
+
+#amount {
+  max-width: 180px;  /* Imposta la larghezza massima desiderata */
+  width: 100%;
+}
+
+/* SUCCESS + SPINNER */
+#successContainer {display:none; text-align:center; margin-top:12px;}
+#spinner {margin:0 auto 12px; width:40px; height:40px; border:4px solid rgba(127,248,224,0.3); border-top:4px solid #00f5c3; border-radius:50%; animation:spin 1s linear infinite;}
+#successBar {opacity:0; color:#7ef9d1; font-weight:700; transition:opacity 1.2s;}
+@keyframes spin {0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);}}
+
+/* DOWNLOAD BUTTONS */
+#downloadBtns {display:none; margin-top:12px; gap:12px; justify-content:center; flex-wrap:wrap;}
+.download-btn {padding:12px 20px; border-radius:8px; background:linear-gradient(90deg,var(--accent),var(--accent-light)); color:#052; font-weight:700; text-decoration:none; box-shadow:0 0 12px rgba(0,245,195,0.5); transition:0.2s;}
+.download-btn:hover {box-shadow:0 0 24px rgba(0,245,195,0.8); transform:scale(1.05);}
+
+/* OVERLAY INFO */
+.info-overlay {position:fixed; inset:0; background:rgba(0,0,0,0.7); display:none; justify-content:center; align-items:center; z-index:1000; padding:20px;}
+.info-overlay-content {background:#0f1520; border:1px solid rgba(0,245,195,0.1); border-radius:14px; padding:24px; width:80%; max-width:320px; max-height:70vh; overflow-y:auto; box-shadow:0 0 40px rgba(0,245,195,0.3);}
+.close-info {margin-top:16px; padding:10px 20px; border:1px solid var(--accent); border-radius:8px; background:transparent; color:#fff; cursor:pointer; text-shadow:0 0 8px var(--accent); transition:0.2s;}
+.close-info:hover {background:rgba(0,245,195,0.1);}
+
+/* RESPONSIVE */
+@media (max-width:480px){
+  .main-wrap {padding-top:60px; padding-bottom:40px; gap:16px;}
+  .card {max-width:260px; padding:18px;}
+  .input, .btn {max-width:220px;}
+  .legal-text {max-width:260px;}
+  .info-card {width:140px; padding:16px;}
+  .modal {max-width:320px; padding:16px;}
+  .row {flex-direction:column;}
+  .col {width:100%;}
+  select,input[type="number"] {max-width:100%;}
+}
+/* === PULSANTI COPIA MODERNI === */
+.copy-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.copy-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.copy-flat {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,245,195,0.3);
+  background: rgba(10, 16, 22, 0.6);
+  color: var(--accent-light);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 8px rgba(0,245,195,0.2);
+  backdrop-filter: blur(4px);
+}
+.copy-flat:hover {
+  box-shadow: 0 0 14px rgba(0,245,195,0.6);
+  transform: scale(1.04);
+}
+.copy-flat:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 20px rgba(0,245,195,0.8);
+}
+
+/* Testo "Copiato!" animato */
+.copied-text {
+  position: absolute;
+  top: -28px;
+  font-size: 12px;
+  color: var(--accent-light);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  text-shadow: 0 0 8px var(--accent);
+  pointer-events: none;
+}
+.copied-text.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+<style>
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000; /* Schermata nera */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* 👇 Qui controlli la dimensione del cerchio GIF */
+#loader-gif {
+  width: 280px;    /* cambia qui per ridimensionare — es. 200px o 180px */
+  height: auto;
+  border: none;
+  outline: none;
+  background: transparent;
+  z-index: 1;
+}
+
+.loader-text {
+  margin-top: 40px;
+  color: #f5a623; /* Oro puro */
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3em;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(245, 166, 35, 0.6);
+  position: relative;
+  z-index: 2;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <img 
+    src="https://cdn.dribbble.com/userupload/23743704/file/original-0034aa5191749c11e4be1a9ba56ec51b.gif" 
+    alt="Generative AI Loader" 
+    id="loader-gif"
+  />
+  <div class="loader-text">Initializing AI Engine...</div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a href="https://torotrades24.com/" class="logo">TORO TRADES AI/24</a>
+</header>
+
+<!-- MAIN WRAPPER -->
+<main class="main-wrap">
+
+  <!-- INFO CARDS -->
+  <div class="info-cards">
+    <div class="info-card" onclick="openInfo('INTRODUZIONE')"><h3>INTRO</h3></div>
+    <div class="info-card" onclick="openInfo('Fasce')"><h3>FASCE</h3></div>
+    <div class="info-card" onclick="openInfo('Fondo')"><h3>FONDO</h3></div>
+    <div class="info-card" onclick="openInfo('Contatto')"><h3>CONTATTO</h3></div>
+  </div>
+
+  <!-- ACCESS CARD -->
+<div class="card">
+  <h2>Integrazione del conto nel sistema di Intelligenza Artificiale</h2>
+  <p>Inserisci i tuoi dati per generare numero conto e password AI.</p>
+
+<input id="nameInput" class="input" type="text" placeholder="Nome">
+<input id="surnameInput" class="input" type="text" placeholder="Cognome">
+<input id="emailInput" class="input" type="email" placeholder="Email">
+
+  <button id="generateBtn" class="btn" style="margin-bottom:10px;">Genera numero conto e password</button>
+  <div id="generateMessage" class="small" style="margin-bottom:10px;color:#ff8787;display:none;"></div>
+
+  <div id="generatedContainer" style="display:none; flex-direction:column; gap:10px; align-items:center; margin-bottom:10px;">
+
+    <!-- Numero Conto -->
+<div class="copy-field">
+  <input id="generatedNumber" class="input" type="text" readonly value="710007926">
+  <div class="copy-wrapper">
+    <button id="copyAccountBtn" class="copy-flat">Copia</button>
+    <span class="copied-text">Copiato!</span>
+  </div>
+</div>
+
+<!-- Password -->
+<div class="copy-field">
+  <input id="generatedPassword" class="input" type="text" readonly value="l336xzXY">
+  <div class="copy-wrapper">
+    <button id="copyPassBtn" class="copy-flat">Copia</button>
+    <span class="copied-text">Copiato!</span>
+  </div>
+</div>
+
+  </div>
+
+
+<button id="enterBtn" class="btn" disabled style="opacity:0.5;cursor:not-allowed;">ENTRA</button>
+
+
+</div>
+
+
+
+  <div class="legal-text">
+    TORO TRADES 24 è di proprietà e gestita da TCR INTERNATIONAL LTD. Sede centrale: 47, Agiou Georgiou, Ground Floor, Latsia, 2224 Nicosia, Cipro, ed è regolamentata dalla CySEC con numero licenza 237/14
+  </div>
+</main>
+
+<!-- MODAL REGISTRAZIONE -->
+<div id="regModal" class="modal-backdrop">
+  <div class="modal">
+    <h3>Modulo Registrazione Strategia IA</h3>
+    <div class="row">
+      <div class="col">
+        <label for="tier">Fascia di capitale</label>
+        <select id="tier" onchange="onTierChange()">
+          <option value="">Seleziona fascia…</option>
+          <option value="Starter">Starter (1 – 1 999 €)</option>
+          <option value="Bronze">Bronze (2 000 – 4 999 €)</option>
+          <option value="Silver">Silver (5 000 – 9 999 €)</option>
+          <option value="Gold">Gold (10 000 – 19 999 €)</option>
+          <option value="Platinum">Platinum (20 000 – 49 999 €)</option>
+          <option value="Diamond">Diamond (50 000 – 99 999 €)</option>
+          <option value="Elite">Elite (100 000 € +)</option>
+        </select>
+      </div>
+      <div class="col" id="amountCol" style="display:none;">
+        <label for="amount">Somma (€)</label>
+        <input id="amount" type="number" placeholder="Inserisci importo"/>
+        <div id="amountHint" class="small"></div>
+<div id="guaranteeNotice" class="small" style="display:none;"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="security">Percentuale di sicurezza</label>
+        <select id="security">
+          <option value="">Seleziona %…</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="timing">Tempistica</label>
+        <select id="timing">
+          <option value="">Seleziona tempistica…</option>
+          <option>1 giorno</option>
+          <option>3 giorni</option>
+          <option>1 settimana</option>
+          <option>1 mese</option>
+          <option>3 mesi</option>
+          <option>6 mesi</option>
+          <option>1 anno</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()" style="background:#333;color:#fff;">Annulla</button>
+      <button class="btn" onclick="submitRegistration()">Conferma</button>
+    </div>
+
+    <div id="successContainer">
+      <div id="spinner"></div>
+      <div id="successBar">Integrazione completata ✔</div>
+    </div>
+    <div id="downloadBtns">
+      <a href="https://clients.torotrades24.com/torotrades.apk" target="_blank" class="download-btn">Play Store</a>
+      <a href="https://clients.torotrades24.com/torotrades.exe" target="_blank" class="download-btn">Windows Store</a>
+      <a href="https://trading.torotrades24.com/it/sign/in" target="_blank" class="download-btn">Web Terminal</a>
+    </div>
+  </div>
+</div>
+
+<!-- INFO OVERLAY -->
+<div id="infoOverlay" class="info-overlay">
+  <div class="info-overlay-content">
+    <h2 id="infoTitle"></h2>
+    <p id="infoContent"></p>
+    <button class="close-info" onclick="closeInfo()">Chiudi</button>
+  </div>
+</div>
+
+<script>
+// ================= PRELOADER =================
+const statusLines=["Initializing IA Engine…","Connecting Neural Network…","Booting Quantum Layer…","Loading Datasets…","Unlocking Trading Core…","System Online ✔"];
+let statusIdx=0; const matrixChars="0123456789ABCDEF";
+function matrixStream(){let out=""; for(let i=0;i<70;i++){out+=matrixChars[Math.floor(Math.random()*matrixChars.length)]; if(i%14===0) out+="\n";} document.getElementById('matrixCode').textContent=out;}
+const matrixInterval=setInterval(matrixStream,70);
+function updateStatusText(){const el=document.getElementById('statusText'); el.textContent=statusLines[statusIdx]||statusLines[statusLines.length-1]; statusIdx=Math.min(statusIdx+1,statusLines.length-1); if(statusIdx<statusLines.length) setTimeout(updateStatusText,900);}
+setTimeout(updateStatusText,600);
+window.addEventListener('load',()=>{setTimeout(()=>{const pre=document.getElementById('preloader'); pre.style.transition='opacity .6s'; pre.style.opacity='0'; setTimeout(()=>{pre.style.display='none'; clearInterval(matrixInterval);},650);},3200);});
+
+// ================= ACCOUNT =================
+// ================= GESTIONE ACCESSO =================
+const enterBtn = document.getElementById('enterBtn');
+
+// Il bottone ENTRA rimane disabilitato finché non viene generato il conto
+function enableEnterButton() {
+  enterBtn.disabled = false;
+  enterBtn.style.opacity = '1';
+  enterBtn.style.cursor = 'pointer';
+  enterBtn.style.boxShadow = "0 0 18px rgba(0,245,195,0.6)";
+  setTimeout(() => enterBtn.style.boxShadow = "", 1000);
+}
+
+// Quando clicchi ENTRA, apre la modale come prima
+enterBtn.addEventListener('click', () => {
+  if (enterBtn.disabled) return;
+  openModal();
+});
+
+// ================= GENERA NUMERO CONTO E PASSWORD =================
+const nameInput = document.getElementById('nameInput');
+const surnameInput = document.getElementById('surnameInput');
+const emailInput = document.getElementById('emailInput');
+const generateBtn = document.getElementById('generateBtn');
+const generatedContainer = document.getElementById('generatedContainer');
+const generatedNumber = document.getElementById('generatedNumber');
+const generatedPassword = document.getElementById('generatedPassword');
+const copyAccountBtn = document.getElementById('copyAccountBtn');
+const copyPassBtn = document.getElementById('copyPassBtn');
+const generateMessage = document.getElementById('generateMessage');
+
+generateBtn.addEventListener('click', () => {
+  const name = nameInput.value.trim().toLowerCase();
+  const surname = surnameInput.value.trim().toLowerCase();
+  const email = emailInput.value.trim().toLowerCase();
+
+  if (name === 'silvano' && surname === 'davie' && email === 'davie54@outlook.it') {
+    generateMessage.style.display = 'none';
+    generatedContainer.style.display = 'flex';
+
+    // Attiva subito il pulsante ENTRA
+    enableEnterButton();
+
+  } else {
+    generatedContainer.style.display = 'none';
+    generateMessage.textContent = '⚠️ Inserisci nome, cognome ed email corretti';
+    generateMessage.style.color = '#ff8787';
+    generateMessage.style.display = 'block';
+
+    // Disattiva ENTRA se non è corretto
+    enterBtn.disabled = true;
+    enterBtn.style.opacity = '0.5';
+    enterBtn.style.cursor = 'not-allowed';
+  }
+});
+
+
+function copyToClipboard(btn, value) {
+  navigator.clipboard.writeText(value);
+
+  // Effetto glow leggero
+  btn.style.boxShadow = "0 0 20px rgba(0,245,195,0.8)";
+  setTimeout(() => btn.style.boxShadow = "0 0 8px rgba(0,245,195,0.2)", 400);
+
+  // Cambia testo in "Copiato" per un momento
+  const originalText = btn.textContent;
+  btn.textContent = "✓";
+  btn.style.color = "#00f5c3";
+  btn.style.transition = "all 0.3s ease";
+
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.style.color = "";
+  }, 1000);
+}
+
+copyAccountBtn.addEventListener('click', () => copyToClipboard(copyAccountBtn, generatedNumber.value));
+copyPassBtn.addEventListener('click', () => copyToClipboard(copyPassBtn, generatedPassword.value));
+
+// ================= MODAL =================
+const modal=document.getElementById('regModal'); const tierSelect=document.getElementById('tier'); const amountCol=document.getElementById('amountCol'); const amountInput=document.getElementById('amount'); const securitySelect=document.getElementById('security'); const timingSelect=document.getElementById('timing'); const amountHint=document.getElementById('amountHint'); const successBar=document.getElementById('successBar'); const downloadBtns=document.getElementById('downloadBtns');
+(function(){for(let i=51;i<=99;i++){const opt=document.createElement('option'); opt.value=i; opt.textContent=i+'%'; securitySelect.appendChild(opt);}})();
+const tierRanges={Starter:[1,1999],Bronze:[2000,4999],Silver:[5000,9999],Gold:[10000,19999],Platinum:[20000,49999],Diamond:[50000,99999],Elite:[100000,Infinity]};
+function openModal(){modal.style.display='flex'; tierSelect.value=''; amountInput.value=''; amountCol.style.display='none'; securitySelect.value=''; timingSelect.value=''; amountHint.textContent=''; document.getElementById('successContainer').style.display='none'; downloadBtns.style.display='none';}
+function closeModal(){modal.style.display='none';}
+function onTierChange(){if(tierSelect.value){amountCol.style.display='block'; const hints={'Starter':'Range consigliato: 1 – 1 999 €','Bronze':'Range consigliato: 2 000 – 4 999 €','Silver':'Range consigliato: 5 000 – 9 999 €','Gold':'Range consigliato: 10 000 – 19 999 €','Platinum':'Range consigliato: 20 000 – 49 999 €','Diamond':'Range consigliato: 50 000 – 99 999 €','Elite':'Minimo consigliato: 100 000 €'}; amountHint.textContent=hints[tierSelect.value]; amountHint.style.color='#7ef9d1';// 🔹 Avviso Fondo di Garanzia
+const guaranteeNotice = document.getElementById('guaranteeNotice');
+if (['Platinum', 'Diamond', 'Elite'].includes(tierSelect.value)) {
+  guaranteeNotice.innerHTML = '💠 <strong>Fondo di Garanzia Attivato</strong><br>Il tuo capitale sarà protetto da fluttuazioni di mercato.';
+  guaranteeNotice.style.display = 'block';
+  guaranteeNotice.style.color = '#00f5c3';
+  guaranteeNotice.style.textShadow = '0 0 8px #00f5c3';
+} else {
+  guaranteeNotice.style.display = 'none';
+}
+} else{amountCol.style.display='none'; amountHint.textContent='';}}
+amountInput.addEventListener('input',()=>{const tier=tierSelect.value; const amount=Number(amountInput.value); if(tier && tierRanges[tier]){const [min,max]=tierRanges[tier]; if(amount<min||amount>max){amountHint.textContent=`❌ L'importo non appartiene alla fascia selezionata (${min} – ${max} €)`; amountHint.style.color='#ff4c4c';} else{const hints={'Starter':'Range consigliato: 1 – 1 999 €','Bronze':'Range consigliato: 2 000 – 4 999 €','Silver':'Range consigliato: 5 000 – 9 999 €','Gold':'Range consigliato: 10 000 – 19 999 €','Platinum':'Range consigliato: 20 000 – 49 999 €','Diamond':'Range consigliato: 50 000 – 99 999 €','Elite':'Minimo consigliato: 100 000 €'}; amountHint.textContent=hints[tier]; amountHint.style.color='#7ef9d1';}}});
+
+// ================= SUCCESS REGISTRATION =================
+function submitRegistration(){
+  const tier=tierSelect.value; 
+  const amount=Number(amountInput.value); 
+  const security=securitySelect.value; 
+  const timing=timingSelect.value; 
+  if(!tier){alert('Seleziona una fascia di capitale.'); return;} 
+  if(!amount || isNaN(amount) || amount<=0 || (tierRanges[tier] && (amount<tierRanges[tier][0] || amount>tierRanges[tier][1]))){alert('Inserisci un importo valido.'); return;} 
+  if(!security){alert('Seleziona la percentuale di sicurezza.'); return;} 
+  if(!timing){alert('Seleziona la tempistica.'); return;} 
+
+  document.getElementById('successContainer').style.display='block';
+  document.getElementById('spinner').style.display='block';
+  document.getElementById('successBar').style.opacity='0';
+  downloadBtns.style.display='none';
+
+  setTimeout(()=>{
+    document.getElementById('spinner').style.display='none';
+    document.getElementById('successBar').style.opacity='1';
+    downloadBtns.style.display='flex';
+  },1200);
+}
+
+// ================= INFO =================
+const infoOverlay=document.getElementById('infoOverlay'); const infoTitle=document.getElementById('infoTitle'); const infoContent=document.getElementById('infoContent');
+const infoData = {
+"INTRODUZIONE": `<span style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-weight:bold;"><strong>INTELLIGENZA ARTIFICIALE E TRADING</strong></span><br><br>
+Nel trading moderno, l'AI Trading e i sistemi automatizzati aprono nuove possibilità per l'analisi di enormi quantità di dati in tempo reale e per prendere decisioni di trading ben informate. Questa guida spiegherà innanzitutto cos'è l'AI trading e come funzionano il trading automatizzato e i sistemi basati sull'intelligenza artificiale. Oltre a trattare i vantaggi e i rischi dell'AI trading, esploreremo anche come aziende e trader possono utilizzare AI trading bots e strategie per ottenere un vantaggio competitivo.<br>
+<p style="line-height: 1.8;">
+• Il trading automatizzato utilizza algoritmi per eseguire operazioni basate su criteri predefiniti senza intervento umano.<br>
+</p>
+• L'AI trading sfrutta il machine learning e algoritmi avanzati per ottimizzare le strategie di trading e prendere decisioni più efficienti.<br>
+</p>
+• I vantaggi dell'AI trading includono l'esecuzione rapida delle operazioni, la neutralità emotiva e il monitoraggio continuo del mercato.<br>
+</p>
+• I rischi dell'AI trading comprendono errori algoritmici, bias tecnologici e condizioni di mercato imprevedibili, che possono portare a perdite inaspettate.<br><br>
+</p>
+<span style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-weight:bold;"><strong>COS'È IL TRADING AUTOMATIZZATO?</strong></span><br>
+</p>
+Il trading automatizzato, noto anche come trading algoritmico, utilizza programmi informatici per eseguire automaticamente ordini di trading in base a criteri predefiniti. Questi programmi analizzano il mercato in tempo reale e prendono decisioni di trading senza intervento umano.
+</p>
+I principali vantaggi del trading automatizzato includono l'esecuzione rapida delle operazioni e la riduzione delle decisioni emotive. I sistemi automatizzati monitorano continuamente i movimenti del mercato e reagiscono istantaneamente ai segnali. Una caratteristica importante è il backtesting, che consente ai trader di testare strategie di trading utilizzando dati storici prima di applicarle nei mercati in tempo reale. Inoltre, il trading automatizzato facilita la diversificazione, poiché è possibile monitorare e negoziare contemporaneamente su più mercati e strategie.
+</p>
+Nonostante i suoi vantaggi, è fondamentale comprendere gli algoritmi sottostanti e il funzionamento dei mercati, oltre a monitorare e regolare regolarmente i sistemi per ottenere risultati ottimali.<br><br>
+</p>
+<span style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-weight:bold;"><strong>COS'È L'AI TRADING?</strong></span><br>
+</p>
+L'AI trading utilizza l'intelligenza artificiale per prendere ed eseguire decisioni di trading. Gli algoritmi basati sull'AI trading analizzano enormi quantità di dati in tempo reale e si adattano dinamicamente ai cambiamenti del mercato.
+L'intelligenza artificiale nel trading si basa su machine learning e algoritmi avanzati per esaminare i dati di mercato e ottimizzare le strategie. Questi sistemi possono individuare schemi e tendenze difficili da identificare per i trader umani. I sistemi di AI trading apprendono continuamente dai nuovi dati e affinano le loro strategie di conseguenza, portando a decisioni di trading più precise ed efficienti. Sfruttando l'AI trading, le decisioni di trading possono essere prese più rapidamente e spesso con maggiore redditività, poiché gli algoritmi possono elaborare grandi volumi di dati in tempo reale e reagire istantaneamente.<br><br>
+</p>
+<span style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-weight:bold;"><strong>COME FUNZIONA L'AI TRADING?</strong></span><br>
+</p>
+Innanzitutto, i sistemi di AI trading raccolgono enormi quantità di dati di mercato, tra cui prezzi storici, volumi di scambio, articoli di notizie e post sui social media. Questi dati vengono quindi analizzati per identificare schemi e tendenze che potrebbero indicare futuri movimenti di prezzo.
+</p>
+Il machine learning consente agli algoritmi di apprendere da questi dati e migliorare continuamente le loro previsioni. Nel tempo, questi algoritmi si adattano affinando i loro modelli basati sull'analisi storica e sui risultati delle strategie di trading precedenti.
+</p>
+In tempo reale, i sistemi di AI trading monitorano i mercati e rispondono istantaneamente ai cambiamenti, permettendo loro di prendere decisioni di trading in frazioni di secondo. Questo consente ai trader di capitalizzare rapidamente sulle opportunità di mercato.
+</p>
+L'AI trading opera esclusivamente sulla base di analisi dei dati e regole predefinite, eliminando i bias emotivi e cognitivi umani. Questa combinazione di analisi dei dati, apprendimento automatico e reattività in tempo reale rende il trading con AI uno strumento potente nei mercati finanziari.<br><br>
+</p>
+<span style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-weight:bold;"><strong>QUALI SONO LE OPPORTUNITÀ DELL'AI TRADING?</strong></span><br>
+</p>
+L'AI trading offre un'ampia gamma di possibilità che superano di gran lunga i sistemi di trading tradizionali. Questa tecnologia introduce approcci innovativi all'analisi di mercato, alla presa di decisioni automatizzata e all'ottimizzazione delle strategie. Dall'uso di algoritmi avanzati all'implementazione dell'intelligenza artificiale e del machine learning, l'AI trading ha il potenziale per trasformare il modo in cui i mercati vengono negoziati.<br><br>
+</p>
+<span style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-weight:bold;"><strong>ANALISI CON MODELLI LINGUISTICI</strong></span><br>
+</p>
+I modelli linguistici, utilizzati nell'elaborazione del linguaggio naturale (NLP), svolgono un ruolo chiave nel trading basato sull'AI. Questi modelli analizzano enormi quantità di dati testuali—come articoli di notizie, report finanziari e post sui social media—per valutare il sentiment del mercato e prevedere possibili movimenti di prezzo.
+</p>
+Interpretando tendenze ed eventi in tempo reale, i modelli linguistici consentono ai trader di prendere decisioni informate basate sulle informazioni più recenti. La loro capacità di rilevare segnali sottili nei testi offre un vantaggio aggiuntivo nell'analisi del mercato, andando oltre i semplici dati numerici tradizionali.<br><br>
+</p>
+<span style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-weight:bold;"><strong>AI TRADING NEL MERCATO AZIONARIO</strong></span><br>
+</p>
+Il trading azionario con AI offre opportunità come l'automazione di strategie di trading complesse e l'ottimizzazione dei portafogli. I sistemi di AI trading analizzano sia i dati storici che quelli in tempo reale per individuare opportunità di trading redditizie.
+</p>
+Questi sistemi reagiscono in frazioni di secondo ai cambiamenti del mercato, un aspetto particolarmente utile in condizioni di elevata volatilità. Inoltre, gli algoritmi di AI trading aiutano a minimizzare i rischi e massimizzare i rendimenti, monitorando continuamente le prestazioni e apportando regolazioni. Questa efficienza e precisione sono vantaggiose sia per gli investitori istituzionali che per i trader individuali.<br><br>
+</p>
+<span style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-weight:bold;"><strong>TRADING DI CRIPTOVALUTE CON AI</strong></span><br>
+</p>
+Nel trading di criptovalute, l'AI trading offre vantaggi significativi. L'elevata volatilità e la disponibilità continua dei mercati (24/7) richiedono decisioni rapide e precise—un'area in cui i sistemi di AI trading eccellono.
+</p>
+L'AI analizza i dati della blockchain, le tendenze di mercato e i volumi di scambio per determinare i momenti migliori per acquistare e vendere. Gli AI trading bots possono eseguire operazioni automaticamente, riducendo l'errore umano. Inoltre, utilizzano il machine learning per adattarsi alle nuove condizioni di mercato e perfezionare continuamente le strategie.
+</p>
+Di conseguenza, l'AI trading è diventato uno strumento essenziale per i trader di criptovalute che vogliono rimanere competitivi in un mercato in continua evoluzione.<br><br>
+</p>
+<span style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-weight:bold;"><strong>CONCLUSIONE: NUOVE OPPORTUNITÀ PER I TRADER CON L’AI</strong></span><br>
+</p>
+L’AI trading non solo aiuta a ottimizzare le strategie di trading e ad aumentare l’efficienza, ma potrebbe anche contribuire allo sviluppo di nuovi approcci di trading. Con la crescente disponibilità di dati e il continuo miglioramento degli algoritmi di AI trading, i sistemi di trading stanno diventando sempre più potenti e precisi.
+</p>
+Questo potrebbe rendere i mercati finanziari più trasparenti, veloci e accessibili. I trader che iniziano a familiarizzare con la tecnologia AI in anticipo potrebbero ottenere un significativo vantaggio competitivo e prepararsi meglio alle condizioni dinamiche del mercato. Il futuro del trading sarà fortemente influenzato dall’integrazione e dal progresso dell’intelligenza artificiale.`,
+  "Fasce": `
+<span style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-weight:bold; font-family:'Orbitron',sans-serif;">
+FASCE E RENDIMENTO
+</span><br><br>
+
+<strong>Piano di Investimento con Fondo di Garanzia</strong><br><br>
+Il piano di investimento proposto si basa su un sistema automatizzato di trading che sfrutta la leva finanziaria per amplificare i rendimenti mensili.<br>
+Ogni fascia di investimento è progettata per adattarsi al livello di capitale investito, con rendimenti composti che crescono ogni mese.<br>
+Maggiore è l'importo investito, maggiore è la leva applicata e, di conseguenza, il rendimento mensile.<br><br>
+
+<span style="color:#00f5c3;">💠 Fondo di Garanzia:</span> attivo automaticamente per investimenti da 20.000€ in su, protegge il capitale da fluttuazioni di mercato garantendo la sicurezza dell'investimento.<br><br>
+
+Le fasce di investimento sono suddivise come segue:
+
+<br><br>
+<span style="color:#00f5c3;">1. Fascia da 250€ a 1.999€ (Leva 1:1)</span>
+<br>
+<strong>Rendimento mensile:</strong> 12%
+<br>
+<strong>Leva applicata:</strong> 1:1
+<br>
+<strong>Capitale con leva:</strong> 250€ fino a 1.999€
+<br>
+<strong>Fondo di garanzia:</strong> non attivato
+<br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px;text-align:center;overflow-x:auto;display:block;">
+<thead>
+<tr style="color:#00f5c3;text-shadow:0 0 6px #00f5c3;">
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Mese</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Iniziale</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Rendimento</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Finale</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>250€</td><td>12%</td><td>280€</td></tr>
+<tr><td>2</td><td>280€</td><td>12%</td><td>313.60€</td></tr>
+<tr><td>3</td><td>313.60€</td><td>12%</td><td>351.20€</td></tr>
+<tr><td>4</td><td>351.20€</td><td>12%</td><td>393.34€</td></tr>
+<tr><td>5</td><td>393.34€</td><td>12%</td><td>441.34€</td></tr>
+<tr><td>6</td><td>441.34€</td><td>12%</td><td>494.70€</td></tr>
+</tbody>
+</table>
+
+<br><br>
+<span style="color:#00f5c3;">2. Fascia da 2.000€ a 4.999€ (Leva 1:2)</span>
+<br>
+<strong>Rendimento mensile:</strong> 24%
+<br>
+<strong>Leva applicata:</strong> 1:2
+<br>
+<strong>Capitale con leva:</strong> 4.000€ fino a 9.998€
+<br>
+<strong>Fondo di garanzia:</strong> non attivato
+<br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px;text-align:center;overflow-x:auto;display:block;">
+<thead>
+<tr style="color:#00f5c3;text-shadow:0 0 6px #00f5c3;">
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Mese</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Iniziale</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Rendimento</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Finale</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>2.000€</td><td>24%</td><td>2.480€</td></tr>
+<tr><td>2</td><td>2.480€</td><td>24%</td><td>3.067,20€</td></tr>
+<tr><td>3</td><td>3.067,20€</td><td>24%</td><td>3.803,73€</td></tr>
+<tr><td>4</td><td>3.803,73€</td><td>24%</td><td>4.715,61€</td></tr>
+<tr><td>5</td><td>4.715,61€</td><td>24%</td><td>5.842,55€</td></tr>
+<tr><td>6</td><td>5.842,55€</td><td>24%</td><td>7.245,76€</td></tr>
+</tbody>
+</table>
+
+<br><br>
+<span style="color:#00f5c3;">3. Fascia da 5.000€ a 9.999€ (Leva 1:3)</span>
+<br>
+<strong>Rendimento mensile:</strong> 36%
+<br>
+<strong>Leva applicata:</strong> 1:3
+<br>
+<strong>Capitale con leva:</strong> 15.000€ fino a 29.997€
+<br>
+<strong>Fondo di garanzia:</strong> non attivato
+<br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px;text-align:center;overflow-x:auto;display:block;">
+<thead>
+<tr style="color:#00f5c3;text-shadow:0 0 6px #00f5c3;">
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Mese</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Iniziale</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Rendimento</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Finale</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>5.000€</td><td>36%</td><td>6.800€</td></tr>
+<tr><td>2</td><td>6.800€</td><td>36%</td><td>9.250€</td></tr>
+<tr><td>3</td><td>9.250€</td><td>36%</td><td>12.580€</td></tr>
+<tr><td>4</td><td>12.580€</td><td>36%</td><td>17.100€</td></tr>
+<tr><td>5</td><td>17.100€</td><td>36%</td><td>23.230€</td></tr>
+<tr><td>6</td><td>23.230€</td><td>36%</td><td>31.600€</td></tr>
+</tbody>
+</table>
+
+<br><br>
+<span style="color:#00f5c3;">4. Fascia da 10.000€ a 19.999€ (Leva 1:4)</span>
+<br>
+<strong>Rendimento mensile:</strong> 48%
+<br>
+<strong>Leva applicata:</strong> 1:4
+<br>
+<strong>Capitale con leva:</strong> 40.000€ fino a 79.996€
+<br>
+<strong>Fondo di garanzia:</strong> non attivato
+<br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px;text-align:center;overflow-x:auto;display:block;">
+<thead>
+<tr style="color:#00f5c3;text-shadow:0 0 6px #00f5c3;">
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Mese</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Iniziale</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Rendimento</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Finale</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>10.000€</td><td>48%</td><td>14.800€</td></tr>
+<tr><td>2</td><td>14.800€</td><td>48%</td><td>21.900€</td></tr>
+<tr><td>3</td><td>21.900€</td><td>48%</td><td>32.440€</td></tr>
+<tr><td>4</td><td>32.440€</td><td>48%</td><td>48.010€</td></tr>
+<tr><td>5</td><td>48.010€</td><td>48%</td><td>70.840€</td></tr>
+<tr><td>6</td><td>70.840€</td><td>48%</td><td>104.650€</td></tr>
+</tbody>
+</table>
+
+<br><br>
+<span style="color:#00f5c3;">5. Fascia da 20.000€ a 49.999€ (Leva 1:5)</span>
+<br>
+<strong>Rendimento mensile:</strong> 60%
+<br>
+<strong>Leva applicata:</strong> 1:5
+<br>
+<strong>Capitale con leva:</strong> 100.000€ fino a 249.995€
+<br>
+<strong>Fondo di garanzia:</strong> Attivato (per investimenti pari o superiori a 20.000€)
+<br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px;text-align:center;overflow-x:auto;display:block;">
+<thead>
+<tr style="color:#00f5c3;text-shadow:0 0 6px #00f5c3;">
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Mese</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Iniziale</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Rendimento</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Finale</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Fondo di Garanzia</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>20.000€</td><td>60%</td><td>32.000€</td><td>Attivato</td></tr>
+<tr><td>2</td><td>32.000€</td><td>60%</td><td>51.200€</td><td>Attivato</td></tr>
+<tr><td>3</td><td>51.200€</td><td>60%</td><td>81.920€</td><td>Attivato</td></tr>
+<tr><td>4</td><td>81.920€</td><td>60%</td><td>131.070€</td><td>Attivato</td></tr>
+<tr><td>5</td><td>131.070€</td><td>60%</td><td>209.720€</td><td>Attivato</td></tr>
+<tr><td>6</td><td>209.720€</td><td>60%</td><td>335.540€</td><td>Attivato</td></tr>
+</tbody>
+</table>
+
+<br><br>
+<span style="color:#00f5c3;">6. Fascia da 50.000€ a 99.999€ (Leva 1:6)</span>
+<br>
+<strong>Rendimento mensile:</strong> 72%
+<br>
+<strong>Leva applicata:</strong> 1:6
+<br>
+<strong>Capitale con leva:</strong> 300.000€ fino a 599.994€
+<br>
+<strong>Fondo di garanzia:</strong> attivato
+<br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px;text-align:center;overflow-x:auto;display:block;">
+<thead>
+<tr style="color:#00f5c3;text-shadow:0 0 6px #00f5c3;">
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Mese</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Iniziale</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Rendimento</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Finale</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Fondo di Garanzia</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>50.000€</td><td>72%</td><td>86.000€</td><td>Attivato</td></tr>
+<tr><td>2</td><td>86.000€</td><td>72%</td><td>147.120€</td><td>Attivato</td></tr>
+<tr><td>3</td><td>147.120€</td><td>72%</td><td>252.220€</td><td>Attivato</td></tr>
+<tr><td>4</td><td>252.220€</td><td>72%</td><td>433.820€</td><td>Attivato</td></tr>
+<tr><td>5</td><td>433.820€</td><td>72%</td><td>746.570€</td><td>Attivato</td></tr>
+<tr><td>6</td><td>746.570€</td><td>72%</td><td>1.281.536€</td><td>Attivato</td></tr>
+</tbody>
+</table>
+
+<br><br>
+<span style="color:#00f5c3;">7. Fascia 100.000€ e oltre (Leva 1:7)</span>
+<br>
+<strong>Rendimento mensile:</strong> 84%
+<br>
+<strong>Leva applicata:</strong> 1:7
+<br>
+<strong>Capitale con leva:</strong> 700.000€ e oltre
+<br>
+<strong>Fondo di garanzia:</strong> attivato
+<br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px;text-align:center;overflow-x:auto;display:block;">
+<thead>
+<tr style="color:#00f5c3;text-shadow:0 0 6px #00f5c3;">
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Mese</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Iniziale</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Rendimento</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Capitale Finale</th>
+  <th style="padding:6px;border-bottom:1px solid rgba(0,245,195,0.2);">Fondo di Garanzia</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>100.000€</td><td>84%</td><td>184.000€</td><td>Attivato</td></tr>
+<tr><td>2</td><td>184.000€</td><td>84%</td><td>338.560€</td><td>Attivato</td></tr>
+<tr><td>3</td><td>338.560€</td><td>84%</td><td>623.620€</td><td>Attivato</td></tr>
+<tr><td>4</td><td>623.620€</td><td>84%</td><td>1.147.463€</td><td>Attivato</td></tr>
+<tr><td>5</td><td>1.147.463€</td><td>84%</td><td>2.110.353€</td><td>Attivato</td></tr>
+<tr><td>6</td><td>2.110.353€</td><td>84%</td><td>3.885.856€</td><td>Attivato</td></tr>
+</tbody>
+</table>
+
+<br><br>
+
+<strong>Dettagli Aggiuntivi:</strong><br>
+Fondo di Garanzia: Attivato per investimenti pari o superiori a 20.000€, il fondo protegge il capitale da fluttuazioni di mercato, offrendo una sicurezza aggiuntiva.
+`,
+
+  "Fondo": `<div style="background-color:#0f1520; padding:30px; border-radius:16px; color:#eaf6f2; box-shadow:0 0 15px rgba(0, 245, 195, 0.3); max-width:900px; margin:0 auto;">
+  <h2 style="text-align:center; color:#00f5c3; text-shadow:0 0 12px #00f5c3;">Fondo di Garanzia del Capitale: Proteggi il Tuo Investimento</h2>
+  
+  <p style="font-size:18px; line-height:1.6;">
+    Il <strong>Fondo di Garanzia del Capitale</strong> è uno strumento esclusivo pensato per garantire la sicurezza dei tuoi investimenti, attivato automaticamente su investimenti pari o superiori a <strong>€20.000</strong>. Questo fondo rappresenta una <strong>copertura protettiva</strong> che si attiva in modo da salvaguardare il capitale inizialmente investito, proteggendoti da eventuali fluttuazioni di mercato. È una garanzia che il tuo investimento non subirà perdite, offrendo <strong>tranquillità</strong> e <strong>sicurezza</strong> in un mercato volatile.
+  </p>
+  
+  <p style="font-size:18px; line-height:1.6;">
+    Il Fondo di Garanzia non solo tutela il tuo capitale, ma permette anche l'accesso a leve finanziarie superiori in totale serenità. Questo significa che puoi <strong>amplificare i rendimenti</strong> senza preoccuparti di rischiare il capitale investito. In sostanza, il fondo è il tuo <strong>scudo finanziario</strong> contro le incertezze economiche, permettendoti di sfruttare al meglio le opportunità di crescita.
+  </p>
+  
+  <h3 style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-size:22px;">Come Funziona il Fondo di Garanzia?</h3>
+  <p style="font-size:18px; line-height:1.6;">
+    Il <strong>Fondo di Garanzia</strong> agisce come una protezione a livello di portafoglio: esso si attiva per <strong>garantire la restituzione integrale del capitale iniziale</strong> investito. Qualora il valore del mercato dovesse subire un calo, il fondo assicura che tu riceva indietro la somma investita, <strong>indipendentemente dall’andamento delle fluttuazioni di mercato</strong>.
+  </p>
+  
+  <p style="font-size:18px; line-height:1.6;">
+    La protezione si applica a investimenti <strong>pari o superiori a €20.000</strong>, con una <strong>maggiore sicurezza</strong> per gli importi maggiori, in modo da garantire che anche in scenari di alta volatilità o di crisi economica, il tuo capitale rimanga intatto.
+  </p>
+  
+  <h3 style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-size:22px;">Perché Scegliere il Fondo di Garanzia?</h3>
+  <p style="font-size:18px; line-height:1.6;">
+    Il <strong>Fondo di Garanzia</strong> è un elemento distintivo che differenzia il nostro sistema di trading da altri servizi sul mercato. I principali vantaggi sono:
+  </p>
+  <ul style="font-size:18px; line-height:1.6;">
+    <li><strong>Protezione Totale:</strong> Il capitale iniziale è garantito, anche in caso di fluttuazioni negative del mercato.</li>
+    <li><strong>Leva Finanziaria Sicura:</strong> Aumenta la tua esposizione al mercato senza rischiare il capitale investito.</li>
+    <li><strong>Tranquillità per l'Investitore:</strong> La protezione del capitale fornisce sicurezza a lungo termine, aumentando la fiducia nell'operato del trader.</li>
+    <li><strong>Adatto a Investitori di Alto Livello:</strong> Ideale per chi desidera investire importi significativi in modo sicuro, con rendimenti più elevati e senza rischiare il capitale.</li>
+    <li><strong>Ottimizzazione del Rendimento:</strong> La possibilità di operare con leve finanziarie superiori consente di massimizzare il ritorno sugli investimenti.</li>
+  </ul>
+
+  <h3 style="color:#00f5c3; text-shadow:0 0 10px #00f5c3; font-size:22px;">Vantaggi Esclusivi per gli Investitori</h3>
+  <p style="font-size:18px; line-height:1.6;">
+    Attivando il <strong>Fondo di Garanzia</strong>, <strong>Toro Trades 24</strong> offre una <strong>protezione unica</strong> che permette agli investitori di concentrarsi sulla <strong>strategia di crescita</strong> senza preoccuparsi delle oscillazioni di mercato. 
+    Il fondo rafforza il nostro impegno nel garantire una <strong>gestione sicura e redditizia</strong> del tuo capitale, assicurandoti la massima <strong>trasparenza</strong> e <strong>affidabilità</strong>.
+  </p>
+  <p style="font-size:18px; line-height:1.6;">
+    Con il Fondo di Garanzia, il rischio di <strong>perdita</strong> viene minimizzato, e ogni investimento è protetto. Questo permette agli investitori di investire in <strong>mercati complessi</strong> come le criptovalute e i mercati azionari globali, senza compromettere la sicurezza del loro capitale.
+  </p>
+</div>
+
+
+`,
+  "Contatto": `Per più informazioni puoi liberamente contattare a: <a href="mailto:info@torotrades24.com">info@torotrades24.com</a>`
+};
+
+const infoTitles = {
+  "Introduzione": "Introduzione",
+  "Fasce": "FASCE E RENDIMENTO",
+  "Fondo": "FONDO DI GARANZIA",
+  "Contatto": "CONTATTO"
+};
+
+
+function openInfo(key){
+  infoTitle.textContent = infoTitles[key] || key;
+  infoContent.innerHTML = infoData[key] || 'Contenuto non disponibile.';
+  infoOverlay.style.display = 'flex';
+}
+
+function closeInfo(){infoOverlay.style.display = 'none';}
+
+// CHIUSURA MODAL / INFO CLICCANDO FUORI
+window.addEventListener('click', (e) => {
+  if(e.target === modal) closeModal();
+  if(e.target === infoOverlay) closeInfo();
+});
+</script>
+
+</body>
+</html>
